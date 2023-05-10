@@ -44,10 +44,11 @@ git clone https://github.com/Livox-SDK/livox_ros_driver2.git ws_livox/src/livox_
 
   Be sure to clone the source code in a '[work_space]/src/' folder (as shown above), otherwise compilation errors will occur due to the compilation tool restriction.
 
-### 2.2 Build & install the Livox-SDK2
+### 2.2 [Only for ROS2] Build & install the Livox-SDK2
 
   **Note :**
 
+  No need to install for ROS1. 
   Please follow the guidance of installation in the [Livox-SDK2/README.md](https://github.com/Livox-SDK/Livox-SDK2/blob/master/README.md)
 
 ### 2.3 Build the Livox ROS Driver 2:
