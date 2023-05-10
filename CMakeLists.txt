@@ -14,6 +14,34 @@ if(ROS_EDITION STREQUAL "ROS1")
   message(STATUS "livox_ros_driver2 version: ${LIVOX_ROS_DRIVER2_VERSION}")
 
   #---------------------------------------------------------------------------------------
+  # Install Livox SDK2 inside the catkin workspace
+  #---------------------------------------------------------------------------------------
+  include(ExternalProject)
+  set(LIVOX_SDK_INSTALL_DIR ${PROJECT_SOURCE_DIR}/livox_sdk)
+  ExternalProject_Add(LIVOX_SDK
+    GIT_REPOSITORY https://github.com/Livox-SDK/Livox-SDK2.git
+    GIT_TAG a19db9e
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${LIVOX_SDK_INSTALL_DIR}
+    TIMEOUT 30
+    CMAKE_ARGS -DCMAKE_BUILD_TYPE=Release
+    BUILD_COMMAND make
+    BUILD_IN_SOURCE 1
+    INSTALL_COMMAND make install
+    LOG_DOWNLOAD ON
+    LOG_CONFIGURE ON
+    LOG_BUILD ON
+    )
+  include_directories(${LIVOX_SDK_INSTALL_DIR}/include)
+  find_library(LIVOX_LIDAR_SDK_LIBRARY  liblivox_lidar_sdk_shared.so   ${LIVOX_SDK_INSTALL_DIR}/lib)
+
+  if (NOT EXISTS ${LIVOX_SDK_INSTALL_DIR})
+    #This has be done in the very first build for
+    # catkin_package to be able to find the include folder
+    make_directory(${LIVOX_SDK_INSTALL_DIR}/include)
+  endif()
+
+
+  #---------------------------------------------------------------------------------------
   # Add ROS Version MACRO
   #---------------------------------------------------------------------------------------
   add_definitions(-DBUILDING_ROS1)
@@ -90,9 +118,6 @@ if(ROS_EDITION STREQUAL "ROS1")
   set(CMAKE_CXX_STANDARD_REQUIRED ON)
   set(CMAKE_CXX_EXTENSIONS OFF)
 
-  ## make sure the livox_lidar_sdk_static library is installed
-  find_library(LIVOX_LIDAR_SDK_LIBRARY  liblivox_lidar_sdk_static.a    /usr/local/lib)
-
   ## PCL library
   link_directories(${PCL_LIBRARY_DIRS})
   add_definitions(${PCL_DEFINITIONS})
@@ -114,7 +139,8 @@ if(ROS_EDITION STREQUAL "ROS1")
   #---------------------------------------------------------------------------------------
   # add projects that depend on
   #---------------------------------------------------------------------------------------
-  add_dependencies(${PROJECT_NAME}_node ${PROJECT_NAME}_generate_messages_cpp)
+  add_dependencies(${PROJECT_NAME}_node ${PROJECT_NAME}_generate_messages_cpp LIVOX_SDK)
+
 
   #---------------------------------------------------------------------------------------
   # source file

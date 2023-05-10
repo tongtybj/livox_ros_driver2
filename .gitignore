@@ -1,4 +1,5 @@
 .vscode
 build
 package.xml
+livox_sdk
 __pycache__
