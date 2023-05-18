@@ -18,6 +18,7 @@ if(ROS_EDITION STREQUAL "ROS1")
   #---------------------------------------------------------------------------------------
   include(ExternalProject)
   set(LIVOX_SDK_INSTALL_DIR ${PROJECT_SOURCE_DIR}/livox_sdk)
+  message(WARNING "${LIVOX_SDK_INSTALL_DIR}")
   ExternalProject_Add(LIVOX_SDK
     GIT_REPOSITORY https://github.com/Livox-SDK/Livox-SDK2.git
     GIT_TAG a19db9e
@@ -32,7 +33,8 @@ if(ROS_EDITION STREQUAL "ROS1")
     LOG_BUILD ON
     )
   include_directories(${LIVOX_SDK_INSTALL_DIR}/include)
-  find_library(LIVOX_LIDAR_SDK_LIBRARY  liblivox_lidar_sdk_shared.so   ${LIVOX_SDK_INSTALL_DIR}/lib)
+  #find_library(LIVOX_LIDAR_SDK_LIBRARY  liblivox_lidar_sdk_shared.so   ${LIVOX_SDK_INSTALL_DIR}/lib)
+  link_directories(${LIVOX_SDK_INSTALL_DIR}/lib)
 
   if (NOT EXISTS ${LIVOX_SDK_INSTALL_DIR})
     #This has be done in the very first build for
@@ -183,7 +185,8 @@ if(ROS_EDITION STREQUAL "ROS1")
   # link libraries
   #---------------------------------------------------------------------------------------
   target_link_libraries(${PROJECT_NAME}_node
-    ${LIVOX_LIDAR_SDK_LIBRARY}
+    #${LIVOX_LIDAR_SDK_LIBRARY}
+    livox_lidar_sdk_shared
     ${Boost_LIBRARY}
     ${catkin_LIBRARIES}
     ${PCL_LIBRARIES}
