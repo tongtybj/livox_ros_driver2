@@ -20,8 +20,8 @@ if(ROS_EDITION STREQUAL "ROS1")
   set(LIVOX_SDK_INSTALL_DIR ${PROJECT_SOURCE_DIR}/livox_sdk)
   message(WARNING "${LIVOX_SDK_INSTALL_DIR}")
   ExternalProject_Add(LIVOX_SDK
-    GIT_REPOSITORY https://github.com/Livox-SDK/Livox-SDK2.git
-    GIT_TAG a19db9e
+    GIT_REPOSITORY git@github.com:tongtybj/Livox-SDK2-backport.git
+    GIT_TAG backport
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${LIVOX_SDK_INSTALL_DIR}
     TIMEOUT 30
     CMAKE_ARGS -DCMAKE_BUILD_TYPE=Release
