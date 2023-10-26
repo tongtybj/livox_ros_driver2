@@ -226,6 +226,20 @@ void Lddc::PublishCustomPointcloud(LidarDataQueue *queue, uint8_t index) {
     InitCustomMsg(livox_msg, pkg, index);
     FillPointsToCustomMsg(livox_msg, pkg);
     PublishCustomPointData(livox_msg, index);
+
+    // workaround: aslo publish pointcloud with ROS message
+    PointCloud cloud;
+    uint64_t timestamp = 0;
+    InitPclMsg(pkg, cloud, timestamp);
+    FillPointsToPclMsg(pkg, cloud);
+
+    ros::Publisher **pub = nullptr;
+    pub = &private_pub_[0];
+    if (*pub == nullptr) {
+      *pub = new ros::Publisher;
+      **pub = cur_node_->GetNode().advertise<sensor_msgs::PointCloud2>("livox/lidar_orig", kMinEthPacketQueueSize / 8);
+    }
+    (*pub)->publish(cloud);
   }
 }
 
