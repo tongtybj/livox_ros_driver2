@@ -40,7 +40,7 @@
         <!-- WIP: publish the laserscan -->
         <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
 
-          <remap from="cloud_in" to="/livox/lidar_orig"/>
+          <remap from="cloud_in" to="livox/lidar_orig"/>
           <remap from="scan" to="/livox/scan"/>
           <rosparam>
             target_frame: livox_frame
