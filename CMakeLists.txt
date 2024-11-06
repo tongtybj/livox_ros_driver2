@@ -13,7 +13,7 @@ if(ROS_EDITION STREQUAL "ROS1")
   #---------------------------------------------------------------------------------------
   include(cmake/version.cmake)
   project(livox_ros_driver2 VERSION ${LIVOX_ROS_DRIVER2_VERSION} LANGUAGES CXX)
-  message(STATUS "livox_ros_driver2 version: ${LIVOX_ROS_DRIVER2_VERSION}")
+  add_compile_options(-std=c++17)
 
   #---------------------------------------------------------------------------------------
   # Install Livox SDK2 inside the catkin workspace
@@ -115,13 +115,6 @@ if(ROS_EDITION STREQUAL "ROS1")
   if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose Release or Debug" FORCE)
   endif()
-
-  #---------------------------------------------------------------------------------------
-  # Compiler config
-  #---------------------------------------------------------------------------------------
-  set(CMAKE_CXX_STANDARD 14)
-  set(CMAKE_CXX_STANDARD_REQUIRED ON)
-  set(CMAKE_CXX_EXTENSIONS OFF)
 
   ## PCL library
   link_directories(${PCL_LIBRARY_DIRS})
