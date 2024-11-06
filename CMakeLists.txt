@@ -24,7 +24,7 @@ if(ROS_EDITION STREQUAL "ROS1")
   ExternalProject_Add(LIVOX_SDK
     GIT_REPOSITORY https://github.com/Livox-SDK/Livox-SDK2.git
     GIT_TAG v1.2.2
-    PATCH_COMMAND git apply ${LIVOX_SDK_INSTALL_DIR}/diff.patch
+    PATCH_COMMAND git apply ${LIVOX_SDK_INSTALL_DIR}/diff.patch || true
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${LIVOX_SDK_INSTALL_DIR}
     TIMEOUT 30
     CMAKE_ARGS -DCMAKE_BUILD_TYPE=Release
