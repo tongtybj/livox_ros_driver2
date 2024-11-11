@@ -13,7 +13,24 @@ if(ROS_EDITION STREQUAL "ROS1")
   #---------------------------------------------------------------------------------------
   include(cmake/version.cmake)
   project(livox_ros_driver2 VERSION ${LIVOX_ROS_DRIVER2_VERSION} LANGUAGES CXX)
-  add_compile_options(-std=c++17)
+
+
+  file(READ "/etc/os-release" OS_RELEASE_CONTENT)
+  string(FIND "${OS_RELEASE_CONTENT}" "ID=ubuntu" IS_UBUNTU)
+  if(NOT IS_UBUNTU EQUAL -1)
+
+    string(REGEX MATCH "VERSION_ID=\"([0-9]+)\\.([0-9]+)\"" _ ${OS_RELEASE_CONTENT})
+    set(UBUNTU_VERSION_MAJOR "${CMAKE_MATCH_1}")
+
+    if(${UBUNTU_VERSION_MAJOR} LESS 20)
+      add_compile_options(-std=c++14)
+    else()
+      add_compile_options(-std=c++17)
+    endif()
+  else()
+    add_compile_options(-std=c++17)
+  endif()
+
 
   #---------------------------------------------------------------------------------------
   # Install Livox SDK2 inside the catkin workspace
