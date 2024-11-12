@@ -23,7 +23,10 @@ if(ROS_EDITION STREQUAL "ROS1")
     set(UBUNTU_VERSION_MAJOR "${CMAKE_MATCH_1}")
 
     if(${UBUNTU_VERSION_MAJOR} LESS 20)
-      add_compile_options(-std=c++14)
+      # https://stackoverflow.com/questions/37621342/cmake-will-not-compile-to-c-11-standard
+      set (CMAKE_CXX_STANDARD 14)
+      set (CMAKE_CXX_STANDARD_REQUIRED ON)
+      set (CMAKE_CXX_EXTENSIONS OFF)
     else()
       add_compile_options(-std=c++17)
     endif()
