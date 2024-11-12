@@ -15,6 +15,7 @@ if(ROS_EDITION STREQUAL "ROS1")
   project(livox_ros_driver2 VERSION ${LIVOX_ROS_DRIVER2_VERSION} LANGUAGES CXX)
 
 
+  # https://stackoverflow.com/questions/37621342/cmake-will-not-compile-to-c-11-standard
   file(READ "/etc/os-release" OS_RELEASE_CONTENT)
   string(FIND "${OS_RELEASE_CONTENT}" "ID=ubuntu" IS_UBUNTU)
   if(NOT IS_UBUNTU EQUAL -1)
@@ -23,16 +24,16 @@ if(ROS_EDITION STREQUAL "ROS1")
     set(UBUNTU_VERSION_MAJOR "${CMAKE_MATCH_1}")
 
     if(${UBUNTU_VERSION_MAJOR} LESS 20)
-      # https://stackoverflow.com/questions/37621342/cmake-will-not-compile-to-c-11-standard
       set (CMAKE_CXX_STANDARD 14)
-      set (CMAKE_CXX_STANDARD_REQUIRED ON)
-      set (CMAKE_CXX_EXTENSIONS OFF)
     else()
-      add_compile_options(-std=c++17)
+      set (CMAKE_CXX_STANDARD 17)
     endif()
   else()
-    add_compile_options(-std=c++17)
+    set (CMAKE_CXX_STANDARD 17)
   endif()
+  set (CMAKE_CXX_STANDARD_REQUIRED ON)
+  set (CMAKE_CXX_EXTENSIONS OFF)
+
 
 
   #---------------------------------------------------------------------------------------
